@@ -11,8 +11,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     let focusedInput = null;
-	const uri = 'neo4j+s://adffa398.databases.neo4j.io';
-	const user = 'neo4j';
+	//const uri = 'neo4j+s://adffa398.databases.neo4j.io';
+	//const user = 'neo4j';
 	const password = 'QHAaLUK1ltd0zae-loZuSqvWQQ8GVZS3IMEBjZL3MM4';
     this.state = {
       focusedInput,
@@ -26,7 +26,7 @@ class App extends Component {
       mapCenter: {
         latitude: 19.0760,
         longitude: 72.8777,
-        radius: 1.5,
+        radius: 3.0,
         zoom: 14
       }
     };
@@ -47,7 +47,7 @@ class App extends Component {
     // this.fetchCategories();
   }
 
-  onDatesChange = ({ startDate, endDate }) => {
+  /*onDatesChange = ({ startDate, endDate }) => {
     if (startDate && endDate) {
       this.setState(
         {
@@ -66,7 +66,7 @@ class App extends Component {
         endDate
       });
     }
-  };
+  };*/
 
   onFocusChange = focusedInput => this.setState({ focusedInput });
 
@@ -212,7 +212,7 @@ class App extends Component {
         const businesses = record.get("businesses");
         // const starsData = record.get("starsData");
         console.log('business '+JSON.stringify(businesses));
-
+        const hospitals = JSON.parse(JSON.stringify(businesses));
         this.setState({
           businesses,
           // starsData
@@ -263,7 +263,7 @@ class App extends Component {
     );
   };
 
-  dateChange = e => {
+ /* dateChange = e => {
     if (e.target.id === "timeframe-start") {
       this.setState(
         {
@@ -287,35 +287,41 @@ class App extends Component {
         }
       );
     }
-  };
+  };*/
 
   render() {
     return (
-      <div id="app-wrapper">
-        <div id="app-toolbar">
-          <form action="" onSubmit={this.handleSubmit}>
-            <div className="row tools">
-              <div className="col-sm-2">
-                <div className="tool radius">
-                  <h5>Query Radius</h5>
-                  <input
-                    type="number"
-                    id="radius-value"
-                    className="form-control"
-                    min="0.1"
-                    max="2.0"
-                    step="0.1"
-                    value={this.state.mapCenter.radius}
-                    onChange={this.radiusChange}
-                  />
-                  <select className="form-control" id="radius-suffix">
-                    <option value="km">km</option>
-                  </select>
-                </div>
-              </div>
+      <div>
+    
+         } <div id="app-maparea">
+            <Map
+              mapSearchPointChange={this.mapSearchPointChange}
+              mapCenter={this.state.mapCenter}
+              businesses={this.state.businesses}
+              businessSelected={this.businessSelected}
+              selectedBusiness={this.state.selectedBusiness}
+            />
+          </div>
 
-              <div className="col-sm-2">
-                <div className="tool coordinates">
+     
+          <div className="rightdiv"> 
+            <input
+              type="number"
+              id="radius-value"
+              className="form-control"
+              min="0.1"
+              max="1000.0"
+              step="0.1"
+              value={this.state.mapCenter.radius}
+              onChange={this.radiusChange}
+            />
+            <select className="form-control" id="radius-suffix">
+              <option value="km">km</option>
+            </select>
+          
+
+            <div>
+                <div>
                   <h5>Latitude</h5>
                   <input
                     type="number"
@@ -329,8 +335,8 @@ class App extends Component {
                 </div>
               </div>
 
-              <div className="col-sm-2">
-                <div className="tool coordinates">
+              <div>
+                <div>
                   <h5>Longitude</h5>
                   <input
                     type="number"
@@ -344,89 +350,22 @@ class App extends Component {
                 </div>
               </div>
 
-              <div className="col-sm-2">
-                <div className="tool timeframe">
-                  <h5>Start Date</h5>
-                  <input
-                    type="date"
-                    id="timeframe-start"
-                    className="form-control"
-                    placeholder="mm/dd/yyyy"
-                    value={this.state.startDate.format("YYYY-MM-DD")}
-                    onChange={this.dateChange}
-                  />
+              <button className="reset">
+                Reset
+              </button>
+              <div className="list">
+                {console.log(this.state.businesses)}
+                    {
+                      !this/this.state.businesses.length ? <h1>No hospitals</h1> :(
+                      this.state.businesses.map((hospital)=>(
+                      <div className="namebox">
+                        <h3 className="hospitalname">{hospital.name}</h3>
+                        <h5 className="hospitaladdress">{hospital.address}</h5>
+                      </div>
+                    )))
+                    }
                 </div>
-              </div>
-
-              <div className="col-sm-2">
-                <div className="tool timeframe">
-                  <h5>End Date</h5>
-                  <input
-                    type="date"
-                    id="timeframe-end"
-                    className="form-control"
-                    placeholder="mm/dd/yyyy"
-                    value={this.state.endDate.format("YYYY-MM-DD")}
-                    onChange={this.dateChange}
-                  />
-                </div>
-              </div>
-
-              <div className="col-sm-2">
-                <div className="tool">
-                  <h5>SpaceTime Reviews</h5>
-                  <span>Data from <a href="https://www.yelp.com/dataset">Yelp Open Dataset</a></span>
-                  <button id="refresh" className="btn btn-primary btn-block">
-                    Refresh
-                  </button>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div className="chart-wrapper">
-          <div id="app-maparea">
-            <Map
-              mapSearchPointChange={this.mapSearchPointChange}
-              mapCenter={this.state.mapCenter}
-              businesses={this.state.businesses}
-              businessSelected={this.businessSelected}
-              selectedBusiness={this.state.selectedBusiness}
-            />
-          </div>
-        </div>
-
-        <div id="app-sidebar">
-          <br />
-          <div id="chart-02">
-            <div className="chart-wrapper">
-              <div className="chart-title">Review Star Summary</div>
-              <div className="chart-stage">
-                <ReviewSummary
-                  businesses={this.state.businesses}
-                  starsData={this.state.starsData}
-                />
-              </div>
-              <div className="chart-notes">
-                Review stars for businesses in the selected radius and date
-                range.
-              </div>
-            </div>
-          </div>
-          <br />
-          <div id="chart-03">
-            <div className="chart-wrapper">
-              <div className="chart-title">Category Summary</div>
-              <div className="chart-stage">
-                <CategorySummary categoryData={this.state.categoryData} />
-              </div>
-              <div className="chart-notes">
-                Business category breakdown for businesses in the selected
-                radius with reviews in the date range.
-              </div>
-            </div>
-          </div>
-        </div>
+          </div>  
       </div>
     );
   }
