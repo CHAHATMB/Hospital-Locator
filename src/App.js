@@ -263,31 +263,6 @@ class App extends Component {
     );
   };
 
- /* dateChange = e => {
-    if (e.target.id === "timeframe-start") {
-      this.setState(
-        {
-          startDate: moment(e.target.value)
-        },
-        () => {
-          this.fetchBusinesses();
-          this.fetchCat();
-          // this.fetchCategories();
-        }
-      );
-    } else if (e.target.id === "timeframe-end") {
-      this.setState(
-        {
-          endDate: moment(e.target.value)
-        },
-        () => {
-          this.fetchBusinesses();
-          this.fetchCat();
-          // this.fetchCategories();
-        }
-      );
-    }
-  };*/
 
   render() {
     return (
@@ -308,26 +283,26 @@ class App extends Component {
             <input
               type="number"
               id="radius-value"
-              className="form-control"
+              className="input"
               min="0.1"
               max="1000.0"
               step="0.1"
               value={this.state.mapCenter.radius}
               onChange={this.radiusChange}
             />
-            <select className="form-control" id="radius-suffix">
+            <select className="input" id="radius-suffix">
               <option value="km">km</option>
             </select>
           
 
             <div>
                 <div>
-                  <h5>Latitude</h5>
+                  <h5 className="inputhead">Latitude</h5>
                   <input
                     type="number"
                     step="any"
                     id="coordinates-lat"
-                    className="form-control"
+                    className="input"
                     placeholder="Latitude"
                     value={this.state.mapCenter.latitude}
                     onChange={()=>(true)}
@@ -337,12 +312,12 @@ class App extends Component {
 
               <div>
                 <div>
-                  <h5>Longitude</h5>
+                  <h5 className="inputhead">Longitude</h5>
                   <input
                     type="number"
                     step="any"
                     id="coordinates-lng"
-                    className="form-control"
+                    className="input"
                     placeholder="Longitude"
                     value={this.state.mapCenter.longitude}
                     onChange={()=>true}
