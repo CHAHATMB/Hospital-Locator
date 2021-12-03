@@ -235,7 +235,7 @@ body.application {
 }
 
 .input {
-  width:250px;
+  width:160px;
   margin:5px;
   margin-left:20px;
 }
@@ -243,4 +243,9 @@ body.application {
 .inputhead {
   margin-top:10px;
   margin-left:20px;
+}
+
+.Cordinates {
+  display: flex;
+  flex-direction: row;
 }

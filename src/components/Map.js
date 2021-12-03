@@ -110,6 +110,7 @@ class Map extends Component {
 
   componentDidUpdate() {
     this.setBusinessMarkers();
+    
     if (this.mapLoaded) {
       this.map
         .getSource("polygon")
@@ -145,7 +146,7 @@ class Map extends Component {
         layout: {},
         paint: {
           "fill-color": "blue",
-          "fill-opacity": 0.6
+          "fill-opacity": 0.2
         }
       });
     });
@@ -175,7 +176,7 @@ class Map extends Component {
       .addTo(this.map)
       .setPopup(
         new mapboxgl.Popup().setText(
-          "Drag me to search for hospitals!"
+          "Drag Me to search for Hospitals!"
         )
       )
       .setDraggable(true)

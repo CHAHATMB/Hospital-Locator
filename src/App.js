@@ -16,8 +16,6 @@ class App extends Component {
 	const password = 'QHAaLUK1ltd0zae-loZuSqvWQQ8GVZS3IMEBjZL3MM4';
     this.state = {
       focusedInput,
-      startDate: moment("2014-01-01"),
-      endDate: moment("2018-01-01"),
       businesses: [],
       starsData: [],
       reviews: [{ day: "2018-01-01", value: 10 }],
@@ -87,7 +85,7 @@ class App extends Component {
     });
   };
   fetchCat = () => {
-    const { mapCenter, startDate, endDate } = this.state;
+    const { mapCenter } = this.state;
     const session = this.driver.session();
 
     session
@@ -124,7 +122,7 @@ class App extends Component {
       });
   };
   fetchCategories = () => {
-    const { mapCenter, startDate, endDate } = this.state;
+    const { mapCenter } = this.state;
     const session = this.driver.session();
 
     session
@@ -169,7 +167,7 @@ class App extends Component {
   };
 
   fetchBusinesses = () => {
-    const { mapCenter, startDate, endDate } = this.state;
+    const { mapCenter } = this.state;
     const session = this.driver.session();
     console.log("fetchbuisness caleed ; "+  JSON.stringify(mapCenter));
     session
@@ -212,7 +210,7 @@ class App extends Component {
         const businesses = record.get("businesses");
         // const starsData = record.get("starsData");
         console.log('business '+JSON.stringify(businesses));
-        const hospitals = JSON.parse(JSON.stringify(businesses));
+        
         this.setState({
           businesses,
           // starsData
@@ -246,6 +244,25 @@ class App extends Component {
   };
 
   handleSubmit = () => {};
+  
+  handlereset = () => {
+    this.setState(
+      {
+        mapCenter: {
+          latitude: 19.0760,
+          longitude: 72.8777,
+          radius: 3.0,
+          zoom: 14
+        }
+        
+        },
+        () => {
+          this.fetchBusinesses();
+          this.fetchCat();
+
+        }
+    );
+  };
 
   radiusChange = e => {
     this.setState(
@@ -268,18 +285,19 @@ class App extends Component {
     return (
       <div>
     
-         } <div id="app-maparea">
-            <Map
-              mapSearchPointChange={this.mapSearchPointChange}
-              mapCenter={this.state.mapCenter}
-              businesses={this.state.businesses}
-              businessSelected={this.businessSelected}
-              selectedBusiness={this.state.selectedBusiness}
-            />
-          </div>
+        <div id="app-maparea">
+          <Map
+            mapSearchPointChange={this.mapSearchPointChange}
+            mapCenter={this.state.mapCenter}
+            businesses={this.state.businesses}
+            businessSelected={this.businessSelected}
+            selectedBusiness={this.state.selectedBusiness}
+          />
+        </div>
 
      
-          <div className="rightdiv"> 
+        <div className="rightdiv"> 
+          <h5 className="inputhead">Query Radius in Km</h5>
             <input
               type="number"
               id="radius-value"
@@ -290,12 +308,12 @@ class App extends Component {
               value={this.state.mapCenter.radius}
               onChange={this.radiusChange}
             />
-            <select className="input" id="radius-suffix">
+            {/*<select className="input" id="radius-suffix">
               <option value="km">km</option>
-            </select>
+            </select>*/}
           
 
-            <div>
+            <div className="Cordinates">
                 <div>
                   <h5 className="inputhead">Latitude</h5>
                   <input
@@ -308,9 +326,9 @@ class App extends Component {
                     onChange={()=>(true)}
                   />
                 </div>
-              </div>
+              
 
-              <div>
+              
                 <div>
                   <h5 className="inputhead">Longitude</h5>
                   <input
@@ -325,7 +343,7 @@ class App extends Component {
                 </div>
               </div>
 
-              <button className="reset">
+              <button onClick={this.handlereset} className="reset">
                 Reset
               </button>
               <div className="list">
