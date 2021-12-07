@@ -6,6 +6,14 @@ import CategorySummary from "./components/CategorySummary";
 import neo4j from "neo4j-driver/lib/browser/neo4j-web";
 // import { Date } from "neo4j-driver/lib/v1/temporal-types";
 import moment from "moment";
+import Filter from './components/Filter'
+
+/*import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';*/
 
 class App extends Component {
   constructor(props) {
@@ -244,7 +252,7 @@ class App extends Component {
   };
 
   handleSubmit = () => {};
-  
+
   handlereset = () => {
     this.setState(
       {
@@ -297,35 +305,36 @@ class App extends Component {
 
      
         <div className="rightdiv"> 
+        <div className="topbox">
           <h5 className="inputhead">Query Radius in Km</h5>
-            <input
-              type="number"
-              id="radius-value"
-              className="input"
-              min="0.1"
-              max="1000.0"
-              step="0.1"
-              value={this.state.mapCenter.radius}
-              onChange={this.radiusChange}
-            />
+          <input
+            type="number"
+            id="radius-value"
+            className="input"
+            min="0.1"
+            max="1000.0"
+            step="0.1"
+            value={this.state.mapCenter.radius}
+            onChange={this.radiusChange}
+          />
             {/*<select className="input" id="radius-suffix">
               <option value="km">km</option>
             </select>*/}
           
 
-            <div className="Cordinates">
-                <div>
-                  <h5 className="inputhead">Latitude</h5>
-                  <input
-                    type="number"
-                    step="any"
-                    id="coordinates-lat"
-                    className="input"
-                    placeholder="Latitude"
-                    value={this.state.mapCenter.latitude}
-                    onChange={()=>(true)}
-                  />
-                </div>
+          <div className="Cordinates">
+            <div>
+              <h5 className="inputhead">Latitude</h5>
+              <input
+                type="number"
+                step="any"
+                id="coordinates-lat"
+                className="input"
+                placeholder="Latitude"
+                value={this.state.mapCenter.latitude}
+                onChange={()=>(true)}
+              />
+            </div>
               
 
               
@@ -346,16 +355,26 @@ class App extends Component {
               <button onClick={this.handlereset} className="reset">
                 Reset
               </button>
+            </div>
+
               <div className="list">
                 {console.log(this.state.businesses)}
                     {
-                      !this/this.state.businesses.length ? <h1>No hospitals</h1> :(
-                      this.state.businesses.map((hospital)=>(
-                      <div className="namebox">
-                        <h3 className="hospitalname">{hospital.name}</h3>
-                        <h5 className="hospitaladdress">{hospital.address}</h5>
-                      </div>
-                    )))
+                      !this.state.businesses.length ? <h1>No hospitals</h1> :(
+                        <div>
+                        <h3 className="showing">Showing {this.state.businesses.length} Hospitals</h3>
+                       
+                      {this.state.businesses.map((hospital)=>(
+                      
+                        <div className="namebox">
+                          <h3 className="hospitalname">{hospital.name}</h3>
+                          <h5 className="hospitaladdress">{hospital.address}</h5>
+                          <h5 className="hospitalinfo">{hospital.category}  &#9679;  {hospital.systemofmedicine}</h5>
+                        </div>
+                      
+                    ))
+                      }
+                    </div>)
                     }
                 </div>
           </div>  
