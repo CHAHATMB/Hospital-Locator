@@ -203,6 +203,12 @@ body.application {
   font-size: 12;
 }
 
+.hospitalinfo {
+  margin-top: 5px;
+  font-size: 9;
+  color:#666;
+}
+
 .rightdiv {
   width:27%;
   position:fixed;
@@ -248,4 +254,10 @@ body.application {
 .Cordinates {
   display: flex;
   flex-direction: row;
+}
+
+.showing {
+  margin-top :10px;
+  margin-Left: 20px;
+  
 }
