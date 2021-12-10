@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -13,7 +13,8 @@ class Map extends Component {
     };
 
     this.businessMarkers = [];
-  }
+  };
+  // useEffect({},[this.props.mapCenter.longitude]);
 
   // https://stackoverflow.com/questions/37599561/drawing-a-circle-with-the-radius-in-miles-meters-with-mapbox-gl-js
   createGeoJSONCircle = (center, radiusInKm, points) => {
@@ -112,7 +113,15 @@ class Map extends Component {
     this.setBusinessMarkers();
     
     if (this.mapLoaded) {
-      this.map
+    const { lng, lat, zoom } = this.state;
+
+      this.map.flyTo({
+        center: [
+          this.props.mapCenter.longitude, this.props.mapCenter.latitude
+        ],
+        zoom: 12,
+        essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        })
         .getSource("polygon")
         .setData(
           this.createGeoJSONCircle(
@@ -120,6 +129,9 @@ class Map extends Component {
             this.props.mapCenter.radius
           ).data
         );
+        this.marker.setLngLat([
+          this.props.mapCenter.longitude, this.props.mapCenter.latitude
+        ]);
     }
   }
 
@@ -171,7 +183,7 @@ class Map extends Component {
         );
     };
 
-    new mapboxgl.Marker({ color: "red", zIndexOffset: 9999 })
+    this.marker = new mapboxgl.Marker({ color: "red", zIndexOffset: 9999 })
       .setLngLat([lng, lat])
       .addTo(this.map)
       .setPopup(
