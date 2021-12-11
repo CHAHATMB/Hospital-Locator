@@ -4,6 +4,9 @@ import Map from "./components/Map";
 import ReviewSummary from "./components/ReviewSummary";
 import CategorySummary from "./components/CategorySummary";
 import neo4j from "neo4j-driver/lib/browser/neo4j-web";
+// import { Date } from "neo4j-driver/lib/v1/temporal-types";
+// import fetch from 'node-fetch';
+import axios from "axios";
 import moment from "moment";
 import Filter from './components/Filter'
 import Button from '@mui/material/Button';
@@ -24,13 +27,16 @@ class App extends Component {
       reviews: [{ day: "2018-01-01", value: 10 }],
       categoryData: [],
       selectedBusiness: false,
+      location:"Delhi, India",
       mapCenter: {
         latitude: 19.0760,
         longitude: 72.8777,
         radius: 3.0,
-        zoom: 14
-      }
+        zoom: 10
+      },
+      catdic:[{cat:"Private",count:0,indexValue:"0"},{cat:"Public",count:0,indexValue:"1"}]
     };
+
     console.log("uri "+process.env.REACT_APP_NEO4J_URI);
     this.driver = neo4j.driver(
       // 'http://localhost:7474',
@@ -70,6 +76,34 @@ class App extends Component {
   };*/
 
   onFocusChange = focusedInput => this.setState({ focusedInput });
+  handlesearch = async () =>{
+
+    try {
+      const response = await axios.get(`http://api.positionstack.com/v1/forward?access_key=c8b3951830ca3db0a04248b76e4a4956&query=${this.state.location}`);
+      console.log("location = "+ JSON.stringify(response.data));
+      this.setState(
+        {
+          mapCenter: {
+            latitude: response.data.data[0].latitude || 19.0760,
+            longitude: response.data.data[0].longitude || 72.8777,
+            radius: 3.0,
+            zoom: 14
+          }
+          
+          },
+          () => {
+            this.fetchBusinesses();
+            // this.fetchCat();
+  
+          }
+      );
+    } catch (error) {
+      console.error(error);
+    };
+
+   
+
+  };
 
   businessSelected = b => {
     this.setState({
@@ -212,12 +246,21 @@ class App extends Component {
         const record = result.records[0];
         const businesses = record.get("businesses");
         // const starsData = record.get("starsData");
-        console.log('business '+JSON.stringify(businesses));
+        console.log('business '+Object.values(businesses));
         
         this.setState({
           businesses,
           // starsData
         });
+        this.state.catdic[0].count = 0;
+        this.state.catdic[1].count = 0;
+      this.state.businesses.map((val)=>{
+        console.log("pahra akh meroi");
+        if(val.category == "Private") this.state.catdic[0].count = this.state.catdic[0].count+1;
+        else this.state.catdic[1].count = this.state.catdic[1].count+1;
+        // return {key:index, value:val*val};
+      }); 
+    console.log("category dic : "+JSON.stringify(this.state.catdic));
         session.close();
       })
       .catch(e => {
@@ -394,7 +437,7 @@ class App extends Component {
                       }
                     </div>)
                     }
-                </div>
+              </div>
           </div>  
       </div>
     );

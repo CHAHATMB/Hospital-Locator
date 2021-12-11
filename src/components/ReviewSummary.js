@@ -3,6 +3,20 @@ import { Bar } from "nivo";
 import { AutoSizer } from "react-virtualized";
 
 class ReviewSummary extends Component {
+  // constructor(props) {
+  //   super(props); 
+  //   var bdata = props.businesses;
+  //   this.state ={
+  //     catdic:[{cat:"Private",count:100,indexValue:"0"},{cat:"Public",count:25,indexValue:"1"}]
+  //   }
+  //   this.props.businesses.map(function(val, index){
+  //     console.log("pahra akh meroi");
+  //     if(val.category == "Private") this.state.catdic[0].count = this.state.catdic[0].count+1;
+  //     else this.state.catdic[1].count = this.state.catdic[1].count+1;
+  //     // return {key:index, value:val*val};
+  //   }); 
+  //   console.log("category dic : "+JSON.stringify(this.state.catdic)+ "\nbdata: "+JSON.stringify(bdata));  
+  // }
   render() {
     return (
       
@@ -12,9 +26,9 @@ class ReviewSummary extends Component {
         height={height}
         width={width}
         // data={this.props.starsData}
-        data={["my name is khan"]}
+        data={this.props.catdic}
         keys={["count"]}
-        indexBy="stars"
+        indexBy="cat"
         margin={{
           top: 25,
           right: 25,
