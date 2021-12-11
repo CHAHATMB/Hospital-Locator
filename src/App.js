@@ -4,16 +4,10 @@ import Map from "./components/Map";
 import ReviewSummary from "./components/ReviewSummary";
 import CategorySummary from "./components/CategorySummary";
 import neo4j from "neo4j-driver/lib/browser/neo4j-web";
-// import { Date } from "neo4j-driver/lib/v1/temporal-types";
 import moment from "moment";
 import Filter from './components/Filter'
-
-/*import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';*/
+import Button from '@mui/material/Button';
+import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 
 class App extends Component {
   constructor(props) {
@@ -26,6 +20,7 @@ class App extends Component {
       focusedInput,
       businesses: [],
       starsData: [],
+      open:true,
       reviews: [{ day: "2018-01-01", value: 10 }],
       categoryData: [],
       selectedBusiness: false,
@@ -288,11 +283,33 @@ class App extends Component {
     );
   };
 
+  handleOpen = () => {
+    this.setState(
+      {
+        open:true,
+      }
+    )
+    this.forceUpdate();
+  }
+
+  handleClose = () => {
+    this.setState(
+      {
+        open:false,
+      }
+    )
+  }
+
 
   render() {
+
     return (
       <div>
-    
+    <div className="dialog"></div>
+      {this.state.open?(
+        <div className="dialog"></div>
+      ):null}
+
         <div id="app-maparea">
           <Map
             mapSearchPointChange={this.mapSearchPointChange}
@@ -363,13 +380,14 @@ class App extends Component {
                       !this.state.businesses.length ? <h1>No hospitals</h1> :(
                         <div>
                         <h3 className="showing">Showing {this.state.businesses.length} Hospitals</h3>
-                       
+                        <button className="reset" onClick={this.handleOpen}>Filter</button>
+
                       {this.state.businesses.map((hospital)=>(
                       
                         <div className="namebox">
                           <h3 className="hospitalname">{hospital.name}</h3>
                           <h5 className="hospitaladdress">{hospital.address}</h5>
-                          <h5 className="hospitalinfo">{hospital.category}  &#9679;  {hospital.systemofmedicine}</h5>
+                          <h5 className="hospitalinfo">{hospital.category}  &#9679;  {hospital.systemofmedicine} &#9679; {hospital.no_beds} Beds</h5>
                         </div>
                       
                     ))
