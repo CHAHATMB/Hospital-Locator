@@ -7,10 +7,11 @@ import neo4j from "neo4j-driver/lib/browser/neo4j-web";
 // import { Date } from "neo4j-driver/lib/v1/temporal-types";
 // import fetch from 'node-fetch';
 import axios from "axios";
-import moment from "moment";
-import Filter from './components/Filter'
-import Button from '@mui/material/Button';
-import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import Dialog from 'react-dialog'
+//import moment from "moment";
+//import Filter from './components/Filter'
+//import Button from '@mui/material/Button';
+//import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 
 class App extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class App extends Component {
       focusedInput,
       businesses: [],
       starsData: [],
-      open:true,
+      isDialogOpen: false,
       reviews: [{ day: "2018-01-01", value: 10 }],
       categoryData: [],
       selectedBusiness: false,
@@ -326,22 +327,9 @@ class App extends Component {
     );
   };
 
-  handleOpen = () => {
-    this.setState(
-      {
-        open:true,
-      }
-    )
-    this.forceUpdate();
-  }
-
-  handleClose = () => {
-    this.setState(
-      {
-        open:false,
-      }
-    )
-  }
+  openDialog = () => this.setState({ isDialogOpen: true })
+ 
+  handleClose = () => this.setState({ isDialogOpen: false })
 
 
   render() {
@@ -415,6 +403,10 @@ class App extends Component {
               <button onClick={this.handlereset} className="reset">
                 Reset
               </button>
+              <input type="string" name="location" className="input" placeholder="Enter Location" onChange={(e)=>{this.state.location = e.target.value}} ></input>
+              <button onClick={this.handlesearch} className="reset">
+                Search
+              </button>
             </div>
 
               <div className="list">
@@ -423,8 +415,27 @@ class App extends Component {
                       !this.state.businesses.length ? <h1>No hospitals</h1> :(
                         <div>
                         <h3 className="showing">Showing {this.state.businesses.length} Hospitals</h3>
-                        <button className="reset" onClick={this.handleOpen}>Filter</button>
-
+                        
+                        <div className="container">
+                          <button type="button" onClick={this.openDialog}>Filter</button>
+                          {
+                              this.state.isDialogOpen &&
+                              <Dialog
+                                  title="Dialog Title"
+                                  modal={true}
+                                  onClose={this.handleClose}
+                                  className="dialog"
+                                  buttons={
+                                      [{
+                                          text: "Close",
+                                          onClick: () => this.handleClose()
+                                      }]
+                                  }>
+                                  <h1>Dialog Content</h1>
+                                  <p>More Content. Anything goes here</p>
+                              </Dialog>
+                          }
+                      </div>
                       {this.state.businesses.map((hospital)=>(
                       
                         <div className="namebox">
