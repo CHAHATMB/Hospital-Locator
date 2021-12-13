@@ -190,7 +190,6 @@ body.application {
 
 .list {
   z-index: 1;
-  border-top:  0.2px solid grey;
   
 }
 
@@ -218,7 +217,8 @@ body.application {
   height:100%;
   display: flex;
   flex-direction: column;
-  border: solid 0.5px grey;
+  -webkit-box-shadow: 0 0 10px gray;
+  box-shadow: 0 0 10px gray;
   overflow-y: auto;
 }
 .reset {
@@ -228,16 +228,26 @@ body.application {
   margin-top: 20px;
   margin-bottom: 20px;
   margin-right: auto;
-  width:150px;
-  height:30px;
-  border-radius: 15px;
+  width:120px;
+  height:36px;
+  border-radius: 18px;
   background-color: rgb(30, 104, 240);
   color: white;
   align-items: center;
 }
+
+.reset:hover{
+  transform: scale(1.1);
+  transition: 0.2s;
+}
 .namebox {
   padding:20px;
-  border-bottom: 0.2px solid grey;
+  border-top: 0.2px solid rgb(197, 197, 197);
+  
+}
+
+.namebox:hover{
+  background-color: rgb(250, 250, 250);
 }
 
 .input {
@@ -251,19 +261,61 @@ body.application {
   margin-left:20px;
 }
 
-.Cordinates {
-  display: flex;
-  flex-direction: row;
-}
-
 .showing {
   margin-top :10px;
   margin-Left: 20px;
+  margin-bottom: 10px;
   
 }
 
 .search{
 display:flex;
 align-items: center;
+margin:auto;
+padding-left: 25px;
+padding-top: 10px;
 
 }
+
+.searchBox{
+  display:flex;
+  align-items: center;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 0 5px gray;
+  box-shadow: 0 0 5px gray;
+  margin:auto;
+  margin-bottom: 10px;
+  margin-top:15px;
+  width:420px;
+  height:50px;
+}
+
+.inputSearch {
+  
+  border:none;
+  height:50px;
+  margin-left: 20px;
+
+}
+
+.searchButton{
+
+  margin-left: 170px;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  color:rgb(30, 104, 240);
+  font-size: 25px;
+  width:50px;
+  height:50px;
+
+
+
+}
+
+.searchButton:hover{
+
+  transform: scale(1.1);
+    
+}
+

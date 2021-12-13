@@ -297,13 +297,17 @@ class App extends Component {
   handlereset = () => {
     this.setState(
       {
+        beds:0,
+        type:"All",
+        system:"All",
+
         mapCenter: {
           latitude: 19.0760,
           longitude: 72.8777,
           radius: 3.0,
           zoom: 14
-        }
-        
+        },
+
         },
         () => {
           this.fetchBusinesses();
@@ -375,7 +379,7 @@ class App extends Component {
 
     return (
       <div>
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <div id="app-maparea">
           <Map
             mapSearchPointChange={this.mapSearchPointChange}
@@ -390,10 +394,10 @@ class App extends Component {
         <div className="rightdiv"> 
         <div className="topbox">
 
-          <div className="search">
-            <input type="string" name="location" className="input" placeholder="Enter Location" onChange={(e)=>{this.state.location = e.target.value}} ></input>
-            <button onClick={this.handlesearch} className="reset">
-              Search
+          <div className="searchBox">
+            <input type="string" name="location" className="inputSearch" placeholder="Enter Location" onChange={(e)=>{this.state.location = e.target.value}} ></input>
+            <button onClick={this.handlesearch} className="searchButton">
+            <i class="fa fa-search"></i>
             </button>
           </div>
 
@@ -416,7 +420,7 @@ class App extends Component {
             <h5 className="inputhead">Beds Count</h5>
             <input
               type="number"
-              id="radius-value"
+              id="beds-value"
               className="input"
               min="0"
               max="10000"
@@ -431,7 +435,7 @@ class App extends Component {
           <div className="search">
           <div>
             <h5 className="inputhead">Type of Hospital</h5>
-            <select onChange={this.typeChange} className="input" name="type" id="type">
+            <select value={this.state.type} onChange={this.typeChange} className="input" name="type" id="type">
               <option value="All">All</option>
               <option value="Private">Private</option>
               <option value="Public">Public</option>
@@ -440,15 +444,15 @@ class App extends Component {
 
             <div>
             <h5 className="inputhead">System Of Medicine</h5>
-            <select onChange={this.systemChange} className="input" name="system" id="system">
+            <select value={this.state.system} onChange={this.systemChange} className="input" name="system" id="system">
               <option value="All">All</option>
-              <option value="Allopathic">Private</option>
+              <option value="Allopathic">Allopathic</option>
               <option value="Ayush/Ayurvedic">Ayush / Ayurvedic</option>
             </select>
             </div>
           </div>
 
-          <div className="search">
+          {/*<div className="search">
             <div>
               <h5 className="inputhead">Latitude</h5>
               <input
@@ -476,7 +480,7 @@ class App extends Component {
                     onChange={()=>true}
                   />
                 </div>
-              </div>
+              </div>*/}
 
               <button onClick={this.handlereset} className="reset">
                 Reset
