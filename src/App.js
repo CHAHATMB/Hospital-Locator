@@ -42,13 +42,14 @@ class App extends Component {
 
     console.log("uri "+process.env.REACT_APP_NEO4J_URI);
     this.driver = neo4j.driver(
-      // 'http://localhost:7474',
+      'bolt://110b3f71.databases.neo4j.io',
       // 'bolt://localhost:7687',
 	// 'https://adffa398.databases.neo4j.io',
-	"bolt://adffa398.databases.neo4j.io",//neo4j+s://adffa398.databases.neo4j.io
+	// "bolt://adffa398.databases.neo4j.io",//neo4j+s://adffa398.databases.neo4j.io
       neo4j.auth.basic(
         'neo4j',
-        password
+        // password
+        'utJGaZ277tyvVZgrza7ZdDAXKINXIVaMILZDvY5TNjY'
       ),
       { encrypted: true }
     );
@@ -496,7 +497,7 @@ class App extends Component {
                         <div className="namebox">
                           <h3 className="hospitalname">{hospital.name}</h3>
                           <h5 className="hospitaladdress">{hospital.address}</h5>
-                          <h5 className="hospitalinfo">{hospital.category}  &#9679;  {hospital.systemofmedicine} &#9679; {hospital.no_beds} Beds</h5>
+                          <h5 className="hospitalinfo">{hospital.category}  &#9679;  {hospital.systemofmed} &#9679; {hospital.no_beds} Beds</h5>
                         </div>
                       
                     ))

@@ -119,7 +119,7 @@ class Map extends Component {
         center: [
           this.props.mapCenter.longitude, this.props.mapCenter.latitude
         ],
-        zoom: 12,
+        // zoom: this.props.mapCenter.zoom,
         essential: true // this animation is considered essential with respect to prefers-reduced-motion
         })
         .getSource("polygon")
