@@ -7,7 +7,7 @@ import neo4j from "neo4j-driver/lib/browser/neo4j-web";
 // import { Date } from "neo4j-driver/lib/v1/temporal-types";
 // import fetch from 'node-fetch';
 import axios from "axios";
-import Dialog from 'react-dialog'
+//import Dialog from 'react-dialog'
 //import moment from "moment";
 //import Filter from './components/Filter'
 //import Button from '@mui/material/Button';
@@ -23,10 +23,12 @@ class App extends Component {
     this.state = {
       focusedInput,
       businesses: [],
-      starsData: [],
-      isDialogOpen: false,
+   
       reviews: [{ day: "2018-01-01", value: 10 }],
       categoryData: [],
+      beds:0,
+      type:"All",
+      system:"All",
       selectedBusiness: false,
       location:"Delhi, India",
       mapCenter: {
@@ -327,19 +329,52 @@ class App extends Component {
     );
   };
 
-  openDialog = () => this.setState({ isDialogOpen: true })
- 
-  handleClose = () => this.setState({ isDialogOpen: false })
+  bedsChange = e => {
+    this.setState(
+      {
+        beds : Number(e.target.value)
+        
+      },
+      () => {
+        this.fetchBusinesses();
+        this.fetchCat();
+        // this.fetchCategories();
+      }
+    );
+  };
 
+  typeChange = e => {
+    this.setState(
+      {
+        type : e.target.value
+        
+      },
+      () => {
+        this.fetchBusinesses();
+        this.fetchCat();
+        // this.fetchCategories();
+      }
+    );
+  };
+
+  systemChange = e => {
+    this.setState(
+      {
+        system : e.target.value
+        
+      },
+      () => {
+        this.fetchBusinesses();
+        this.fetchCat();
+        // this.fetchCategories();
+      }
+    );
+  };
 
   render() {
 
     return (
       <div>
-    <div className="dialog"></div>
-      {this.state.open?(
-        <div className="dialog"></div>
-      ):null}
 
         <div id="app-maparea">
           <Map
@@ -354,23 +389,66 @@ class App extends Component {
      
         <div className="rightdiv"> 
         <div className="topbox">
-          <h5 className="inputhead">Query Radius in Km</h5>
-          <input
-            type="number"
-            id="radius-value"
-            className="input"
-            min="0.1"
-            max="1000.0"
-            step="0.1"
-            value={this.state.mapCenter.radius}
-            onChange={this.radiusChange}
-          />
-            {/*<select className="input" id="radius-suffix">
-              <option value="km">km</option>
-            </select>*/}
-          
 
-          <div className="Cordinates">
+          <div className="search">
+            <input type="string" name="location" className="input" placeholder="Enter Location" onChange={(e)=>{this.state.location = e.target.value}} ></input>
+            <button onClick={this.handlesearch} className="reset">
+              Search
+            </button>
+          </div>
+
+          <div className="search">
+          <div>
+            <h5 className="inputhead">Query Radius in Km</h5>
+            <input
+              type="number"
+              id="radius-value"
+              className="input"
+              min="0.1"
+              max="1000.0"
+              step="0.1"
+              value={this.state.mapCenter.radius}
+              onChange={this.radiusChange}
+            />
+              </div>
+
+            <div>
+            <h5 className="inputhead">Beds Count</h5>
+            <input
+              type="number"
+              id="radius-value"
+              className="input"
+              min="0"
+              max="10000"
+              step="5"
+              value={this.state.beds}
+              onChange={this.bedsChange}
+            />
+            </div>
+
+          </div>
+          
+          <div className="search">
+          <div>
+            <h5 className="inputhead">Type of Hospital</h5>
+            <select onChange={this.typeChange} className="input" name="type" id="type">
+              <option value="All">All</option>
+              <option value="Private">Private</option>
+              <option value="Public">Public</option>
+            </select>
+            </div>
+
+            <div>
+            <h5 className="inputhead">System Of Medicine</h5>
+            <select onChange={this.systemChange} className="input" name="system" id="system">
+              <option value="All">All</option>
+              <option value="Allopathic">Private</option>
+              <option value="Ayush/Ayurvedic">Ayush / Ayurvedic</option>
+            </select>
+            </div>
+          </div>
+
+          <div className="search">
             <div>
               <h5 className="inputhead">Latitude</h5>
               <input
@@ -403,10 +481,7 @@ class App extends Component {
               <button onClick={this.handlereset} className="reset">
                 Reset
               </button>
-              <input type="string" name="location" className="input" placeholder="Enter Location" onChange={(e)=>{this.state.location = e.target.value}} ></input>
-              <button onClick={this.handlesearch} className="reset">
-                Search
-              </button>
+              
             </div>
 
               <div className="list">
@@ -416,26 +491,6 @@ class App extends Component {
                         <div>
                         <h3 className="showing">Showing {this.state.businesses.length} Hospitals</h3>
                         
-                        <div className="container">
-                          <button type="button" onClick={this.openDialog}>Filter</button>
-                          {
-                              this.state.isDialogOpen &&
-                              <Dialog
-                                  title="Dialog Title"
-                                  modal={true}
-                                  onClose={this.handleClose}
-                                  className="dialog"
-                                  buttons={
-                                      [{
-                                          text: "Close",
-                                          onClick: () => this.handleClose()
-                                      }]
-                                  }>
-                                  <h1>Dialog Content</h1>
-                                  <p>More Content. Anything goes here</p>
-                              </Dialog>
-                          }
-                      </div>
                       {this.state.businesses.map((hospital)=>(
                       
                         <div className="namebox">

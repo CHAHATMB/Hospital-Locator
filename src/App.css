@@ -262,15 +262,8 @@ body.application {
   
 }
 
-.dialog{
-  width:40%;
-  height:40%;
-  z-index: 999999;
-  border:solid red;
-  display:block;
-  margin:auto;
-  color:blue;
-  box-shadow: #808080;
-  background-color: yellow;
+.search{
+display:flex;
+align-items: center;
 
 }
