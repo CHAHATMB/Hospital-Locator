@@ -224,16 +224,22 @@ body.application {
 .reset {
   display: flex;
   justify-content: center;
-  margin-left:auto;
+  /*margin-left:auto;*/
+  margin:28px;
   margin-top: 20px;
   margin-bottom: 20px;
-  margin-right: auto;
+  
+  /*margin-right: auto;*/
   width:120px;
   height:36px;
   border-radius: 18px;
-  background-color: rgb(30, 104, 240);
+  background-color: rgb(12, 58, 209);
   color: white;
   align-items: center;
+}
+
+.submit{
+  background-color: rgb(19, 145, 3);
 }
 
 .reset:hover{
@@ -274,6 +280,13 @@ align-items: center;
 margin:auto;
 padding-left: 25px;
 padding-top: 10px;
+
+}
+
+.buttondiv{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 
 }
 

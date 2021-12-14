@@ -35,7 +35,7 @@ class App extends Component {
         latitude: 19.131577,
         longitude: 72.891418,
         radius: 3.0,
-        zoom: 10
+        zoom: 12
       },
       catdic:[{cat:"Private",count:0,indexValue:"0"},{cat:"Public",count:0,indexValue:"1"}],
       querycond:""
@@ -92,7 +92,7 @@ class App extends Component {
             latitude: response.data.data[0].latitude || 19.131577,
             longitude: response.data.data[0].longitude || 72.891418,
             radius: 3.0,
-            zoom: 14
+            zoom: 12
           }
           
           },
@@ -291,7 +291,7 @@ class App extends Component {
           latitude: 19.131577,
           longitude: 72.891418,
           radius: 3.0,
-          zoom: 14
+          zoom: 12
         },
 
         },
@@ -494,21 +494,22 @@ class App extends Component {
                   />
                 </div>
               </div>*/}
-                    <button onClick={this.handlesubmit} className="reset">
-                      Submit
-                    </button>
-                    <button onClick={this.handlereset} className="reset">
-                      Reset
-                    </button>
-
+              <div className="buttondiv"> 
+                <button onClick={this.handlereset} className="reset">
+                  Reset
+                </button>
+                <button onClick={this.handlesubmit} className="reset submit">
+                  Submit
+                </button>
+              </div>
               
               
             </div>
 
               <div className="list">
-                {/* {console.log(this.state.businesses)} */}
+                { console.log(this.state.businesses)}
                     {
-                      !this.state.businesses.length ? <h1>No hospitals</h1> :(
+                      !this.state.businesses.length ? <h1 className="showing">Sorry! No hospitals to show.&#10;<br/> Please move the Red Pin or increase the Query Radius.</h1> :(
                         <div>
                         <h3 className="showing">Showing {this.state.businesses.length} Hospitals</h3>
                         

@@ -73,10 +73,13 @@ class Map extends Component {
       <strong>Category: </strong> ${business.category}
     </li>
     <li>
-    <strong>Ambulance No. : </strong> ${business.ambulnumber}
+      <strong>System Of Medicine : </strong> ${business.systemofmed}
+    </li>
+    <li>
+    <strong>Ambulance No. : </strong> ${business.ambulancephoneno}
   </li>
   <li>
-  <strong>City : </strong> ${business.city}
+  <strong>District : </strong> ${business.district}
 </li>
 
     
