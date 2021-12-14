@@ -99,7 +99,7 @@ class Map extends Component {
     //     .addTo(this.map);
     // });
     this.businessMarkers = businesses.map(b => {
-      console.log("latitude: "+b['latitude'] + typeof(b['longitude']))
+      // console.log("latitude: "+b['latitude'] + typeof(b['longitude']))
       return new mapboxgl.Marker()
         .setLngLat( [b['longitude'],b['latitude']])
         .setPopup(
@@ -119,7 +119,7 @@ class Map extends Component {
         center: [
           this.props.mapCenter.longitude, this.props.mapCenter.latitude
         ],
-        // zoom: this.props.mapCenter.zoom,
+        //  zoom: this.props.mapCenter.zoom,
         essential: true // this animation is considered essential with respect to prefers-reduced-motion
         })
         .getSource("polygon")

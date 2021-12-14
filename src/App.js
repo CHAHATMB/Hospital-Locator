@@ -32,12 +32,13 @@ class App extends Component {
       selectedBusiness: false,
       location:"Delhi, India",
       mapCenter: {
-        latitude: 19.0760,
-        longitude: 72.8777,
+        latitude: 19.131577,
+        longitude: 72.891418,
         radius: 3.0,
         zoom: 10
       },
-      catdic:[{cat:"Private",count:0,indexValue:"0"},{cat:"Public",count:0,indexValue:"1"}]
+      catdic:[{cat:"Private",count:0,indexValue:"0"},{cat:"Public",count:0,indexValue:"1"}],
+      querycond:""
     };
 
     console.log("uri "+process.env.REACT_APP_NEO4J_URI);
@@ -54,7 +55,7 @@ class App extends Component {
       { encrypted: true }
     );
     this.fetchBusinesses();
-    this.fetchCat();
+    // this.fetchCat();
     // this.fetchCategories();
   }
 
@@ -88,8 +89,8 @@ class App extends Component {
       this.setState(
         {
           mapCenter: {
-            latitude: response.data.data[0].latitude || 19.0760,
-            longitude: response.data.data[0].longitude || 72.8777,
+            latitude: response.data.data[0].latitude || 19.131577,
+            longitude: response.data.data[0].longitude || 72.891418,
             radius: 3.0,
             zoom: 14
           }
@@ -213,22 +214,8 @@ class App extends Component {
     console.log("fetchbuisness caleed ; "+  JSON.stringify(mapCenter));
     session
       .run(
-        // `
-        // MATCH (b:Business)<-[:REVIEWS]-(r:Review)
-        // WHERE $start <= r.date <= $end AND distance(b.location, point({latitude: $lat, longitude: $lon})) < ( $radius * 1000)
-        // OPTIONAL MATCH (b)-[:IN_CATEGORY]->(c:Category)
-        // WITH r,b, COLLECT(c.name) AS categories
-        // WITH COLLECT(DISTINCT b {.*, categories}) AS businesses, COLLECT(DISTINCT r) AS reviews
-        // UNWIND reviews AS r
-        // WITH businesses, r.stars AS stars, COUNT(r) AS num ORDER BY stars
-        // WITH businesses, COLLECT({stars: toString(stars), count:toFloat(num)}) AS starsData
-        // RETURN businesses, starsData`
-        // `MATCH (b:Hospital)
-        // WHERE distance(b.location, point({latitude: $lat, longitude: $lon})) < ( $radius * 1000)
-        // WITH COLLECT(DISTINCT b ) AS businesses
-        // RETURN businesses`
         `MATCH (b:Hospital)
-        WHERE b.latitude IS NOT NULL AND distance(point({latitude:  b.latitude, longitude: b.longitude}), point({latitude: $lat, longitude: $lon})) < ( $radius * 1000)
+        WHERE b.latitude IS NOT NULL AND distance(point({latitude:  b.latitude, longitude: b.longitude}), point({latitude: $lat, longitude: $lon})) < ( $radius * 1000) ${this.state.querycond}
         WITH COLLECT( b {.*}) AS businesses
         RETURN businesses
         `,
@@ -246,11 +233,11 @@ class App extends Component {
         }
       )
       .then(result => {
-        console.log('result;calted '+JSON.stringify(result));
+        // console.log('result;calted '+JSON.stringify(result));
         const record = result.records[0];
         const businesses = record.get("businesses");
         // const starsData = record.get("starsData");
-        console.log('business '+Object.values(businesses));
+        // console.log('business '+Object.values(businesses));
         
         this.setState({
           businesses,
@@ -258,13 +245,13 @@ class App extends Component {
         });
         this.state.catdic[0].count = 0;
         this.state.catdic[1].count = 0;
-      this.state.businesses.map((val)=>{
-        console.log("pahra akh meroi");
-        if(val.category == "Private") this.state.catdic[0].count = this.state.catdic[0].count+1;
-        else this.state.catdic[1].count = this.state.catdic[1].count+1;
-        // return {key:index, value:val*val};
-      }); 
-    console.log("category dic : "+JSON.stringify(this.state.catdic));
+      // this.state.businesses.map((val)=>{
+      //   console.log("pahra akh meroi");
+      //   if(val.category == "Private") this.state.catdic[0].count = this.state.catdic[0].count+1;
+      //   else this.state.catdic[1].count = this.state.catdic[1].count+1;
+      //   // return {key:index, value:val*val};
+      // }); 
+    // console.log("category dic : "+JSON.stringify(this.state.catdic));
         session.close();
       })
       .catch(e => {
@@ -280,7 +267,7 @@ class App extends Component {
       this.state.mapCenter.longitude !== prevState.mapCenter.longitude
     ) {
       this.fetchBusinesses();
-      this.fetchCat();
+      // this.fetchCat();
       // this.fetchCategories();
     }
     if (
@@ -293,8 +280,6 @@ class App extends Component {
     }
   };
 
-  handleSubmit = () => {};
-
   handlereset = () => {
     this.setState(
       {
@@ -303,8 +288,8 @@ class App extends Component {
         system:"All",
 
         mapCenter: {
-          latitude: 19.0760,
-          longitude: 72.8777,
+          latitude: 19.131577,
+          longitude: 72.891418,
           radius: 3.0,
           zoom: 14
         },
@@ -312,12 +297,37 @@ class App extends Component {
         },
         () => {
           this.fetchBusinesses();
-          this.fetchCat();
+          // this.fetchCat();
 
         }
     );
   };
-
+  handlesubmit = () => {
+    console.log("beds:"+this.state.beds+"\n type:"+this.state.type+"\n system:"+this.state.system);
+    if(this.state.beds!=0){
+      this.state.querycond = 'AND b.no_of_beds > '+ this.state.beds;
+    }
+    if(this.state.type != 'All'){
+      this.state.querycond += ` AND b.category = ${JSON.stringify(this.state.type)}`;
+    }
+    if(this.state.system != 'All'){
+      this.state.querycond += ` AND b.systemofmed =  ${JSON.stringify(this.state.system)}`;
+    }
+    console.log("query string : " + this.state.querycond);
+    this.setState(
+        () => {
+          this.fetchBusinesses();
+        }
+    );
+    // this.setState(
+    //   {
+    //     beds:0,
+    //     type:"All",
+    //     system:"All",
+    //     querycond:"",
+    //     }
+    // );
+  };
   radiusChange = e => {
     this.setState(
       {
@@ -328,23 +338,24 @@ class App extends Component {
       },
       () => {
         this.fetchBusinesses();
-        this.fetchCat();
+        // this.fetchCat();
         // this.fetchCategories();
       }
     );
   };
 
   bedsChange = e => {
+
     this.setState(
       {
         beds : Number(e.target.value)
         
       },
-      () => {
-        this.fetchBusinesses();
-        this.fetchCat();
-        // this.fetchCategories();
-      }
+      // () => {
+      //   this.fetchBusinesses();
+      //   // this.fetchCat();
+      //   // this.fetchCategories();
+      // }
     );
   };
 
@@ -354,11 +365,11 @@ class App extends Component {
         type : e.target.value
         
       },
-      () => {
-        this.fetchBusinesses();
-        this.fetchCat();
-        // this.fetchCategories();
-      }
+      // () => {
+      //   this.fetchBusinesses();
+      //   this.fetchCat();
+      //   // this.fetchCategories();
+      // }
     );
   };
 
@@ -368,11 +379,11 @@ class App extends Component {
         system : e.target.value
         
       },
-      () => {
-        this.fetchBusinesses();
-        this.fetchCat();
-        // this.fetchCategories();
-      }
+      // () => {
+      //   this.fetchBusinesses();
+      //   this.fetchCat();
+      //   // this.fetchCategories();
+      // }
     );
   };
 
@@ -448,7 +459,8 @@ class App extends Component {
             <select value={this.state.system} onChange={this.systemChange} className="input" name="system" id="system">
               <option value="All">All</option>
               <option value="Allopathic">Allopathic</option>
-              <option value="Ayush/Ayurvedic">Ayush / Ayurvedic</option>
+              <option value="Ayurveda">Ayurveda</option>
+              <option value="Homeopathy">Homeopathy</option>
             </select>
             </div>
           </div>
@@ -482,15 +494,19 @@ class App extends Component {
                   />
                 </div>
               </div>*/}
+                    <button onClick={this.handlesubmit} className="reset">
+                      Submit
+                    </button>
+                    <button onClick={this.handlereset} className="reset">
+                      Reset
+                    </button>
 
-              <button onClick={this.handlereset} className="reset">
-                Reset
-              </button>
+              
               
             </div>
 
               <div className="list">
-                {console.log(this.state.businesses)}
+                {/* {console.log(this.state.businesses)} */}
                     {
                       !this.state.businesses.length ? <h1>No hospitals</h1> :(
                         <div>
