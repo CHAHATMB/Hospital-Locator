@@ -1,17 +1,9 @@
 import React, { Component } from "react";
 import "./App.css";
 import Map from "./components/Map";
-import ReviewSummary from "./components/ReviewSummary";
-import CategorySummary from "./components/CategorySummary";
 import neo4j from "neo4j-driver/lib/browser/neo4j-web";
-// import { Date } from "neo4j-driver/lib/v1/temporal-types";
-// import fetch from 'node-fetch';
 import axios from "axios";
-//import Dialog from 'react-dialog'
-//import moment from "moment";
-//import Filter from './components/Filter'
-//import Button from '@mui/material/Button';
-//import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+
 
 class App extends Component {
   constructor(props) {
@@ -55,30 +47,8 @@ class App extends Component {
       { encrypted: true }
     );
     this.fetchBusinesses();
-    // this.fetchCat();
-    // this.fetchCategories();
+    
   }
-
-  /*onDatesChange = ({ startDate, endDate }) => {
-    if (startDate && endDate) {
-      this.setState(
-        {
-          startDate,
-          endDate
-        },
-        () => {
-          this.fetchBusinesses();
-          this.fetchCat();
-          // this.fetchCategories();
-        }
-      );
-    } else {
-      this.setState({
-        startDate,
-        endDate
-      });
-    }
-  };*/
 
   onFocusChange = focusedInput => this.setState({ focusedInput });
   handlesearch = async () =>{
@@ -142,12 +112,7 @@ class App extends Component {
           lat: mapCenter.latitude,
           lon: mapCenter.longitude,
           radius: mapCenter.radius,
-          // start: new Date(
-          //   startDate.year(),
-          //   startDate.month() + 1,
-          //   startDate.date()
-          // ),
-          // end: new Date(endDate.year(), endDate.month() + 1, endDate.date())
+        
         }
       )
       .then(result => {
@@ -169,13 +134,7 @@ class App extends Component {
 
     session
       .run(
-    //     `MATCH (b:Business)<-[:REVIEWS]-(r:Review)
-    //     WHERE $start <= r.date <= $end AND distance(b.location, point({latitude: $lat, longitude: $lon})) < ($radius * 1000)
-    //     WITH DISTINCT b
-    //     OPTIONAL MATCH (b)-[:IN_CATEGORY]->(c:Category)
-    //     WITH c.name AS cat, COUNT(b) AS num ORDER BY num DESC LIMIT 25
-    //     RETURN COLLECT({id: cat, label: cat, value: toFloat(num)}) AS categoryData
-    // `
+   
     `MATCH (b:Hospital)
         WHERE distance(point({latitude:  b.latitude, longitude: b.longitude}), point({latitude: $lat, longitude: $lon})) < ($radius * 1000)
         WITH DISTINCT b
@@ -186,12 +145,7 @@ class App extends Component {
           lat: mapCenter.latitude,
           lon: mapCenter.longitude,
           radius: mapCenter.radius,
-          // start: new Date(
-          //   startDate.year(),
-          //   startDate.month() + 1,
-          //   startDate.date()
-          // ),
-          // end: new Date(endDate.year(), endDate.month() + 1, endDate.date())
+          
         }
       )
       .then(result => {
@@ -224,12 +178,7 @@ class App extends Component {
           lat: mapCenter.latitude,
           lon: mapCenter.longitude,
           radius: mapCenter.radius,
-          // start: new Date(
-          //   startDate.year(),
-          //   startDate.month() + 1,
-          //   startDate.date()
-          // ),
-          // end: new Date(endDate.year(), endDate.month() + 1, endDate.date())
+          
         }
       )
       .then(result => {
@@ -245,13 +194,7 @@ class App extends Component {
         });
         this.state.catdic[0].count = 0;
         this.state.catdic[1].count = 0;
-      // this.state.businesses.map((val)=>{
-      //   console.log("pahra akh meroi");
-      //   if(val.category == "Private") this.state.catdic[0].count = this.state.catdic[0].count+1;
-      //   else this.state.catdic[1].count = this.state.catdic[1].count+1;
-      //   // return {key:index, value:val*val};
-      // }); 
-    // console.log("category dic : "+JSON.stringify(this.state.catdic));
+      
         session.close();
       })
       .catch(e => {
@@ -267,8 +210,7 @@ class App extends Component {
       this.state.mapCenter.longitude !== prevState.mapCenter.longitude
     ) {
       this.fetchBusinesses();
-      // this.fetchCat();
-      // this.fetchCategories();
+     
     }
     if (
       this.state.selectedBusiness &&
@@ -297,7 +239,7 @@ class App extends Component {
         },
         () => {
           this.fetchBusinesses();
-          // this.fetchCat();
+          
 
         }
     );
@@ -319,14 +261,7 @@ class App extends Component {
           this.fetchBusinesses();
         }
     );
-    // this.setState(
-    //   {
-    //     beds:0,
-    //     type:"All",
-    //     system:"All",
-    //     querycond:"",
-    //     }
-    // );
+ 
   };
   radiusChange = e => {
     this.setState(
@@ -338,8 +273,7 @@ class App extends Component {
       },
       () => {
         this.fetchBusinesses();
-        // this.fetchCat();
-        // this.fetchCategories();
+       
       }
     );
   };
@@ -351,11 +285,7 @@ class App extends Component {
         beds : Number(e.target.value)
         
       },
-      // () => {
-      //   this.fetchBusinesses();
-      //   // this.fetchCat();
-      //   // this.fetchCategories();
-      // }
+  
     );
   };
 
@@ -365,11 +295,7 @@ class App extends Component {
         type : e.target.value
         
       },
-      // () => {
-      //   this.fetchBusinesses();
-      //   this.fetchCat();
-      //   // this.fetchCategories();
-      // }
+     
     );
   };
 
@@ -379,11 +305,7 @@ class App extends Component {
         system : e.target.value
         
       },
-      // () => {
-      //   this.fetchBusinesses();
-      //   this.fetchCat();
-      //   // this.fetchCategories();
-      // }
+     
     );
   };
 
@@ -465,35 +387,6 @@ class App extends Component {
             </div>
           </div>
 
-          {/*<div className="search">
-            <div>
-              <h5 className="inputhead">Latitude</h5>
-              <input
-                type="number"
-                step="any"
-                id="coordinates-lat"
-                className="input"
-                placeholder="Latitude"
-                value={this.state.mapCenter.latitude}
-                onChange={()=>(true)}
-              />
-            </div>
-              
-
-              
-                <div>
-                  <h5 className="inputhead">Longitude</h5>
-                  <input
-                    type="number"
-                    step="any"
-                    id="coordinates-lng"
-                    className="input"
-                    placeholder="Longitude"
-                    value={this.state.mapCenter.longitude}
-                    onChange={()=>true}
-                  />
-                </div>
-              </div>*/}
               <div className="buttondiv"> 
                 <button onClick={this.handlereset} className="reset">
                   Reset

@@ -230,9 +230,9 @@ body.application {
   margin-bottom: 20px;
   
   /*margin-right: auto;*/
-  width:120px;
-  height:36px;
-  border-radius: 18px;
+  width:110px;
+  height:32px;
+  border-radius: 16px;
   background-color: rgb(12, 58, 209);
   color: white;
   align-items: center;
@@ -257,7 +257,7 @@ body.application {
 }
 
 .input {
-  width:160px;
+  width:142px;
   margin:5px;
   margin-left:20px;
 }
@@ -299,26 +299,26 @@ padding-top: 10px;
   margin:auto;
   margin-bottom: 10px;
   margin-top:15px;
-  width:420px;
-  height:50px;
+  width:360px;
+  height:43px;
 }
 
 .inputSearch {
   
   border:none;
-  height:50px;
+  height:40px;
   margin-left: 20px;
 
 }
 
 .searchButton{
 
-  margin-left: 170px;
+  margin-left: 115px;
   display:flex;
   align-items: center;
   justify-content: center;
   color:rgb(30, 104, 240);
-  font-size: 25px;
+  font-size: 21px;
   width:50px;
   height:50px;
 
