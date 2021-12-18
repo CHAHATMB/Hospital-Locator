@@ -71,7 +71,7 @@ Home page
 ### 👨‍💻**Team members**
 * Chahat Baghele
 * Mohak Chandani
-* Vinakay Bodke
+* Vinayak Bodke
 
 <!-- LICENSE -->
 ## License
