@@ -62,10 +62,10 @@ Tools and technologies that you learnt and used in the project:
 <h3>
 Home page
 </h3>
-<img src="src/public/images/home.png" >
+<img src="public/images/home.png" >
 
 </br>
-<a><h3>Map Page</h3><img src="src/public/images/map.png" >
+<a><h3>Map Page</h3><img src="public/images/map.png" >
 </a>
 
 ### 👨‍💻**Team members**
