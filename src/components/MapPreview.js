@@ -29,10 +29,10 @@ class MapPreview extends Component {
 
     console.log("uri "+process.env.REACT_APP_NEO4J_URI);
     this.driver = neo4j.driver(
-      proccess.env.REACT_APP_NEO4J_URI,
+      process.env.REACT_APP_NEO4J_URI,
       neo4j.auth.basic(
-        proccess.env.REACT_APP_NEO4J_USER,
-        proccess.env.REACT_APP_NEO4J_PASSWORD
+        process.env.REACT_APP_NEO4J_USER,
+        process.env.REACT_APP_NEO4J_PASSWORD
       ),
       { encrypted: true }
     );
