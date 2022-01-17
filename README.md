@@ -1,31 +1,79 @@
-## Hospital-Locator
+<p align="center">
+<h1 align="center">Hospital-Locator</h1>
+  <p align="center">
+    Get the info about hospital near you.
+    <br /> 
+    </p>
+</p>
 
-A React app to demonstrate how to use the spatial and temporal functionality introduced in Neo4j 3.4. It makes use of:
+### Try the Live-Demo Here
+[Hospital Locator](http://hospital-locator.herokuapp.com/)
+    
+<!-- ABOUT THE PROJECT -->
+## 📖About The Project
+This is a course project part of Spatial Graph Database course 5th Semester.
+### 🔧**Project Setup**  
 
-* [create-react-app](https://github.com/facebook/create-react-app)
-* [neo4j-javascript-driver](https://github.com/neo4j/neo4j-javascript-driver)
-* [Mapbox GL JS](https://www.mapbox.com/mapbox-gl-js/api/)
-* [Nivo charts](http://nivo.rocks/)
+This project has two part - frontend and deployed graph database on AuraDB.
+To get a local copy up and running follow these simple example steps.
 
-![](img/screenshot.png)
+### Prerequisites
+ You need to have pre-installed npm (a Node package manager)
 
-## Installation 
+### Installation
 
-Set environment variables:
+1. Clone the repo
+   ```sh
+   git clone https://github.com/CHAHATMB/Hospital-Locator.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+3. Set environment variables:
+    ```
+    REACT_APP_NEO4J_URI=XXX
+    REACT_APP_NEO4J_USER=XXX
+    REACT_APP_NEO4J_PASSWORD=XXX
+    REACT_APP_MAPBOX_TOKEN=XXX
+    ```
 
-```
-REACT_APP_NEO4J_URI=XXX
-REACT_APP_NEO4J_USER=XXX
-REACT_APP_NEO4J_PASSWORD=XXX
-REACT_APP_MAPBOX_TOKEN=XXX
-```
+    these can be added to `.env`
+### Run
 
-these can be added to `.env`
+1. To run 
+   ```sh
+   npm start
+   ```
+2. To run in Development mode
+   ```sh
+   npm run dev
+   ```
 
-Clone this git repo, and then
+### 💻**Technology stack**
+Tools and technologies that you learnt and used in the project:
+1. ReactJS
+2. Neo4j
+3. Map Box
+4. Git and Github
 
-```
-npm install
-npm start
-```
 
+### 📸**Screenshots**
+<h3>
+Home page
+</h3>
+<img src="public/images/home.png" >
+
+</br>
+<a><h3>Map Page</h3><img src="public/images/map.png" >
+</a>
+
+### 👨‍💻**Team members**
+* Chahat Baghele
+* Mohak Chandani
+* Vinayak Bodke
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.

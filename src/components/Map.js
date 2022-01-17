@@ -12,7 +12,7 @@ class Map extends Component {
       zoom: props.mapCenter.zoom
     };
 
-    this.businessMarkers = [];
+    this.hospitalMarkers = [];
   };
   // useEffect({},[this.props.mapCenter.longitude]);
 
@@ -58,62 +58,62 @@ class Map extends Component {
     };
   };
 
-  businessPopupHTML = business => {
+  hospitalPopupHTML = hospital => {
     return `<ul>
     <li>
-      <strong>Name: </strong> ${business.name}
+      <strong>Name: </strong> ${hospital.name}
     </li>
     <li>
-      <strong>Address: </strong> ${business.address}
+      <strong>Address: </strong> ${hospital.address}
     </li>
     <li>
-      <strong>Bed Count: </strong> ${business.no_beds}
+      <strong>Bed Count: </strong> ${hospital.no_beds}
     </li>
     <li>
-      <strong>Category: </strong> ${business.category}
+      <strong>Category: </strong> ${hospital.category}
     </li>
     <li>
-      <strong>System Of Medicine : </strong> ${business.systemofmed}
+      <strong>System Of Medicine : </strong> ${hospital.systemofmed}
     </li>
     <li>
-    <strong>Ambulance No. : </strong> ${business.ambulancephoneno}
+    <strong>Ambulance No. : </strong> ${hospital.ambulancephoneno}
   </li>
   <li>
-  <strong>District : </strong> ${business.district}
+  <strong>District : </strong> ${hospital.district}
 </li>
 
     
   </ul>`;
   };
 
-  setBusinessMarkers() {
-    const { businesses } = this.props;
-    this.businessMarkers.map(m => {
+  setHospitalsMarkers() {
+    const { hospitals } = this.props;
+    this.hospitalMarkers.map(m => {
       m.remove();
       return true;
     });
 
-    // this.businessMarkers = businesses.map(b => {
+    // this.hospitalMarkers = hospitals.map(b => {
     //   return new mapboxgl.Marker()
     //     .setLngLat([b.location.x, b.location.y])
     //     .setPopup(
-    //       new mapboxgl.Popup({ offset: 25 }).setHTML(this.businessPopupHTML(b))
+    //       new mapboxgl.Popup({ offset: 25 }).setHTML(this.hospitalPopupHTML(b))
     //     )
     //     .addTo(this.map);
     // });
-    this.businessMarkers = businesses.map(b => {
+    this.hospitalMarkers = hospitals.map(b => {
       // console.log("latitude: "+b['latitude'] + typeof(b['longitude']))
       return new mapboxgl.Marker()
         .setLngLat( [b['longitude'],b['latitude']])
         .setPopup(
-          new mapboxgl.Popup({ offset: 25 }).setHTML(this.businessPopupHTML(b))
+          new mapboxgl.Popup({ offset: 25 }).setHTML(this.hospitalPopupHTML(b))
         )
         .addTo(this.map);
     });
   }
 
   componentDidUpdate() {
-    this.setBusinessMarkers();
+    this.setHospitalsMarkers();
     
     if (this.mapLoaded) {
     const { lng, lat, zoom } = this.state;
@@ -209,7 +209,7 @@ class Map extends Component {
       });
     });
 
-    this.setBusinessMarkers();
+    this.setHospitalsMarkers();
   }
 
   render() {

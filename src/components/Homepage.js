@@ -10,7 +10,7 @@ class App extends Component {
               <div id="page-title"> Find Hospitals Near You. Instantly. </div>
               <div id="page-subtitle">Data of Over 10000 hospitals available across India.</div>
               <div id="map">
-                <a href="/map">Find Hospitals <i class="material-icons">double_arrow</i></a>
+                <a href="https://hospital-locator-maps.herokuapp.com/">Find Hospitals <i class="material-icons">double_arrow</i></a>
               </div>
               <div></div>
             </section>

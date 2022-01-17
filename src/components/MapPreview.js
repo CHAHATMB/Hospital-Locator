@@ -9,19 +9,14 @@ class MapPreview extends Component {
   constructor(props) {
     super(props);
     let focusedInput = null;
-	//const uri = 'neo4j+s://adffa398.databases.neo4j.io';
-	//const user = 'neo4j';
-	const password = 'QHAaLUK1ltd0zae-loZuSqvWQQ8GVZS3IMEBjZL3MM4';
     this.state = {
       focusedInput,
-      businesses: [],
-   
-      reviews: [{ day: "2018-01-01", value: 10 }],
+      hospitals: [],
       categoryData: [],
       beds:0,
       type:"All",
       system:"All",
-      selectedBusiness: false,
+      selectedHospital: false,
       location:"Delhi, India",
       mapCenter: {
         latitude: 19.131577,
@@ -29,24 +24,19 @@ class MapPreview extends Component {
         radius: 3.0,
         zoom: 12
       },
-      catdic:[{cat:"Private",count:0,indexValue:"0"},{cat:"Public",count:0,indexValue:"1"}],
       querycond:""
     };
 
     console.log("uri "+process.env.REACT_APP_NEO4J_URI);
     this.driver = neo4j.driver(
-      'bolt://110b3f71.databases.neo4j.io',
-      // 'bolt://localhost:7687',
-	// 'https://adffa398.databases.neo4j.io',
-	// "bolt://adffa398.databases.neo4j.io",//neo4j+s://adffa398.databases.neo4j.io
+      proccess.env.REACT_APP_NEO4J_URI,
       neo4j.auth.basic(
-        'neo4j',
-        // password
-        'utJGaZ277tyvVZgrza7ZdDAXKINXIVaMILZDvY5TNjY'
+        proccess.env.REACT_APP_NEO4J_USER,
+        proccess.env.REACT_APP_NEO4J_PASSWORD
       ),
       { encrypted: true }
     );
-    this.fetchBusinesses();
+    this.fetchHospitals();
     
   }
 
@@ -67,9 +57,7 @@ class MapPreview extends Component {
           
           },
           () => {
-            this.fetchBusinesses();
-            // this.fetchCat();
-  
+            this.fetchHospitals();
           }
       );
     } catch (error) {
@@ -80,9 +68,9 @@ class MapPreview extends Component {
 
   };
 
-  businessSelected = b => {
+  hospitalSelected = b => {
     this.setState({
-      selectedBusiness: b
+      selectedHospital: b
     });
   };
 
@@ -162,18 +150,16 @@ class MapPreview extends Component {
       });
   };
 
-  fetchBusinesses = () => {
+  fetchHospitals = () => {
     const { mapCenter } = this.state;
     const session = this.driver.session();
-    console.log("fetchbuisness caleed ; "+  JSON.stringify(mapCenter));
     session
       .run(
         `MATCH (b:Hospital)
         WHERE b.latitude IS NOT NULL AND distance(point({latitude:  b.latitude, longitude: b.longitude}), point({latitude: $lat, longitude: $lon})) < ( $radius * 1000) ${this.state.querycond}
-        WITH COLLECT( b {.*}) AS businesses
-        RETURN businesses
+        WITH COLLECT( b {.*}) AS hospitals
+        RETURN hospitals
         `,
-        // `MATCH  (h:Hospital) WITH COLLECT( h {.*}) as businesses RETURN businesses`,
         {
           lat: mapCenter.latitude,
           lon: mapCenter.longitude,
@@ -182,23 +168,15 @@ class MapPreview extends Component {
         }
       )
       .then(result => {
-        // console.log('result;calted '+JSON.stringify(result));
         const record = result.records[0];
-        const businesses = record.get("businesses");
-        // const starsData = record.get("starsData");
-        // console.log('business '+Object.values(businesses));
+        const hospitals = record.get("hospitals");
         
         this.setState({
-          businesses,
-          // starsData
-        });
-        this.state.catdic[0].count = 0;
-        this.state.catdic[1].count = 0;
-      
+          hospitals,
+        });      
         session.close();
       })
       .catch(e => {
-        // TODO: handle errors.
         console.log(e);
         session.close();
       });
@@ -209,13 +187,13 @@ class MapPreview extends Component {
       this.state.mapCenter.latitude !== prevState.mapCenter.latitude ||
       this.state.mapCenter.longitude !== prevState.mapCenter.longitude
     ) {
-      this.fetchBusinesses();
+      this.fetchHospitals();
      
     }
     if (
-      this.state.selectedBusiness &&
-      (!prevState.selectedBusiness ||
-        this.state.selectedBusiness.id !== prevState.selectedBusiness.id ||
+      this.state.selectedHospital &&
+      (!prevState.selectedHospital ||
+        this.state.selectedHospital.id !== prevState.selectedHospital.id ||
         false ||
         false)
     ) {
@@ -238,7 +216,7 @@ class MapPreview extends Component {
 
         },
         () => {
-          this.fetchBusinesses();
+          this.fetchHospitals();
           
 
         }
@@ -259,7 +237,7 @@ class MapPreview extends Component {
     console.log("query string : " + this.state.querycond);
     this.setState(
         () => {
-          this.fetchBusinesses();
+          this.fetchHospitals();
         }
     );
  
@@ -273,7 +251,7 @@ class MapPreview extends Component {
         }
       },
       () => {
-        this.fetchBusinesses();
+        this.fetchHospitals();
        
       }
     );
@@ -319,9 +297,9 @@ class MapPreview extends Component {
           <Map
             mapSearchPointChange={this.mapSearchPointChange}
             mapCenter={this.state.mapCenter}
-            businesses={this.state.businesses}
-            businessSelected={this.businessSelected}
-            selectedBusiness={this.state.selectedBusiness}
+            hospitals={this.state.hospitals}
+            hospitalSelected={this.hospitalSelected}
+            selectedHospital={this.state.selectedHospital}
           />
         </div>
 
@@ -401,13 +379,13 @@ class MapPreview extends Component {
             </div>
 
               <div className="list">
-                { console.log(this.state.businesses)}
+                { console.log(this.state.hospitals)}
                     {
-                      !this.state.businesses.length ? <h1 className="showing">Sorry! No hospitals to show.&#10;<br/> Please move the Red Pin or increase the Query Radius.</h1> :(
+                      !this.state.hospitals.length ? <h1 className="showing">Sorry! No hospitals to show.&#10;<br/> Please move the Red Pin or increase the Query Radius.</h1> :(
                         <div>
-                        <h3 className="showing">Showing {this.state.businesses.length} Hospitals</h3>
+                        <h3 className="showing">Showing {this.state.hospitals.length} Hospitals</h3>
                         
-                      {this.state.businesses.map((hospital)=>(
+                      {this.state.hospitals.map((hospital)=>(
                       
                         <div className="namebox">
                           <h3 className="hospitalname">{hospital.name}</h3>
