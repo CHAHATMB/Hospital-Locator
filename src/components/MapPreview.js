@@ -245,6 +245,7 @@ class MapPreview extends Component {
     );
   };
   handlesubmit = () => {
+    this.state.querycond="";
     console.log("beds:"+this.state.beds+"\n type:"+this.state.type+"\n system:"+this.state.system);
     if(this.state.beds!=0){
       this.state.querycond = 'AND b.no_of_beds > '+ this.state.beds;
